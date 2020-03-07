@@ -21,4 +21,4 @@ class DiscordClient(discord.Client):
                 await message.channel.send('What the frick did you say to me you lil shoot')
 
 client = DiscordClient()
-client.run(token)
+client.run(TOKEN)
