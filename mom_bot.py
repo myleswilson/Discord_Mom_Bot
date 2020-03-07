@@ -10,22 +10,10 @@ load_dotenv()
 
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-class Client:
-    def event(self, func):
-        if func.__name__ == "on_message":
-            self.on_message_handle = func
-            return func
-
-    def receive_message(self, msg):
-        func = getattr(self, "on_message_handle", None)
-        if func is not None:
-            func(msg)
-        else:
-            self.process_commands(msg)
-client = Client()
+#client = Client()
 bot = commands.Bot(command_prefix='?')
 
-@client.event
+#@client.event
 class DiscordClient(discord.Client):
     async def on_ready(self):
         print(f'{self.user} has connected to Discord!')
@@ -34,14 +22,9 @@ class DiscordClient(discord.Client):
         if message.author != self.user:
             if message.content == 'hi':
                 await message.channel.send('What the frick did you say to me you lil shoot')
-
-@client.event
-async def on_member_join(on_member_join):
-    await member.create_dm()
-    await member.dm_channel.send(f'Hi {member.name}, welcome to my Discord server!')
-# Chancla command that sends gif
-
-@bot.command(name='chancla')
+# Chancla command that sends gif.
+# Sends random gif each time.
+@bot.command(name='chancla', help='sends chancla gif')
 async def chancla(ctx):
     chancla_angry = [
         'https://media.giphy.com/media/TH2TwG8loO06Y/giphy.gif',
@@ -52,6 +35,5 @@ async def chancla(ctx):
 
     response = random.choice(chancla_angry)
     await ctx.send(response)
-##await message.channel.send('https://media.giphy.com/media/TH2TwG8loO06Y/giphy.gif')
-#client = DiscordClient()
+client = DiscordClient()
 bot.run(TOKEN)
