@@ -11,20 +11,21 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
 #client = Client()
-bot = commands.Bot(command_prefix='?')
+client = commands.Bot(command_prefix='?')
 
-#@client.event
-class DiscordClient(discord.Client):
-    async def on_ready(self):
-        print(f'{self.user} has connected to Discord!')
-    async def on_message(self, message):
+@client.event
+#class DiscordClient(discord.client):
+async def on_ready():
+    print(f'{client.user.name} has connected to Discord!')
+async def on_message(self, message):
     # Whenever a user other than bot says "hi"
-        if message.author != self.user:
-            if message.content == 'hi':
-                await message.channel.send('What the frick did you say to me you lil shoot')
+    if message.author != self.user:
+        if message.content == 'hi':
+            await message.channel.send('What the frick did you say to me you lil shoot')
+
 # Chancla command that sends gif.
 # Sends random gif each time.
-@bot.command(name='chancla', help='sends chancla gif')
+@client.command(name='chancla', help='sends chancla gif')
 async def chancla(ctx):
     chancla_angry = [
         'https://media.giphy.com/media/TH2TwG8loO06Y/giphy.gif',
@@ -35,5 +36,5 @@ async def chancla(ctx):
 
     response = random.choice(chancla_angry)
     await ctx.send(response)
-client = DiscordClient()
-bot.run(TOKEN)
+
+client.run(TOKEN)
