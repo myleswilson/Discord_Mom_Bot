@@ -37,49 +37,56 @@ async def hello(ctx):
 
 # Makes a new channel.
 @client.command(name = 'channel')
-async def make(ctx, ChannelName = 'THE H O U S E'):
+async def make(ctx, ChannelName = "reee"):
     guild = ctx.guild
     ExistingChannel = discord.utils.get(guild.channels, name = ChannelName)
     if not ExistingChannel:
         print(f'{ChannelName} has been created.')
         await guild.create_text_channel(ChannelName)
-    if ExistingChannel:
+    else:
         await ctx.send('Can you not')
+        await ctx.send('https://media.giphy.com/media/jPA6KI2Mdbj5viVW4d/giphy.gif')
 
-
+# Direct messages the user that calls the command.
 @client.command(name = 'dm')
 async def dm(ctx):
    await ctx.author.send('<AeroMilk is the milk for you>')
 
-
+# Direct messages the mentioned user.
 @client.command(name = 'DM')
-async def DM(ctx, user: discord.User, *, message=None):
-   #message = '<AeroMilk is the milk for you> brought to you by an anonymous user'
-   await ctx.user.send_message('<AeroMilk is the milk for you> brought to you by an anonymous user')
+async def DM(ctx, user: discord.User):
+   message = '<AeroMilk is the milk for you> brought to you by an anonymous user'
+   await user.send(message)
 
 
-@client.command(pass_context=True)
-async def clear(ctx, amount=100):
-	channel = ctx.message.channel
-	messages = []
-	async for message in client.logs_from(channel, limit=int(amount)):
-		messages.append(message)
-	await client.delete_messages(messages)
-
-
+# 3 choices and recipe
 @client.command()
-async def hungry():
-	embed = discord.Embed(
-		title = 'Title',
-		description = 'This is a description. ',
+async def embedt(ctx):
+
+    embed = discord.Embed(
+		title = 'Spahetti',
+		description = 'Spaghetti in just 30 mins with instapot \n \n Ingredient = "1/2 lb Ground Beef, lean (or lean ground turkey)',
 		colour = discord.Colour.blue()
-		)
+    )
+    embed.set_author(name='Dinner', icon_url='https://i.imgur.com/CKVgFUk.jpg')
+    embed.set_image(url='https://i.imgur.com/GFvVWpD.jpg')
+    embed.set_thumbnail(url='https://i.imgur.com/zm7BXHj.png')
+    embed.add_field(name='Test Field', value='this is test', inline=False)
+    embed.set_footer(text='This is a footer')
 
-	embed.set_footer(text='This is a footer.')
-	await client.say(embed=embed)
+    await ctx.send(embed=embed)
 
 
-#@client.command(name = 'advice')
-#async def say(ctx):
+# Allows the user to ask the bot a question, and get advice back.
+@client.command(name = 'advice')
+async def smart(ctx, arg):
+    final_advice = [
+        'Burn that ' + arg + ' like when I burned my ex\'s house down!',
+        (
+            'Rip up that ' + arg + ' like I rip up my taxes!'
+        ),
+    ]
+    test = random.choice(final_advice)
+    await ctx.send(test)
 
 client.run(TOKEN)
