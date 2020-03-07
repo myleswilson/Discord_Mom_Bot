@@ -8,10 +8,17 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 # GUILD = os.getenv('DISCORD_GUILD')
 
-client = discord.Client()
+#client = discord.Client()
 
 @client.event
-async def on_ready():
-    print(f'{client.user} has connected to Discord!')
+class DiscordClient(discord.Client):
+    async def on_ready(self):
+        print(f'{self.user} has connected to Discord!')
+    async def on_message(self, message):
+    # Whenever a user other than bot says "hi"
+        if message.author != self.user:
+            if message.content == 'hi':
+                await message.channel.send('What the frick did you say to me you lil shoot')
 
+client = DiscordClient()
 client.run(token)
