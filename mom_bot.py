@@ -18,21 +18,21 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 client = commands.Bot(command_prefix = '', case_insensitive = True)
 
+# Prints when discord bot is connected.
 @client.event
 async def on_ready():
     print(f'{client.user.name} has connected to Discord! <AeroMilk is the milk for you>')
 
-
-@client.command(name = "Mom_I'm_hungry", help = "Mom asks you what you want")
+# Gives the user three choices of food to choose from
+@client.command(name = "Mom_I'm_hungry", help = "Mom asks you what you want.")
 async def hungry(message):
-    await message.channel.send('What do you want for dinner sugar tush? \n'
-                               '1. Spaghetti \n'
-                               '2. Chicken Noodle Soup \n'
-                               '3. Chili \n')
-    await message.channel.send(embed=embed)
+    await message.channel.send('What do you want for dinner, sugar tush? \n'
+                               '• Spaghetti \n'
+                               '• Chicken Noodle Soup \n'
+                               '• Chili \n', tts = True)
 
-
-@client.command(name = "Spaghetti", help = "Displays spaghetti recipe")
+# Spaghetti recipe.
+@client.command(name = "Spaghetti", help = "Displays spaghetti recipe.")
 async def spaghet(message):
     embed = discord.Embed(
         title = 'Insta-Pot Spaghetti',
@@ -69,11 +69,11 @@ async def spaghet(message):
     embed.set_image(url='https://i.imgur.com/5QZng5B.jpg')
     embed.set_thumbnail(url='https://i.imgur.com/g6X06Gc.jpg')
     embed.set_footer(text='Love you ♥')
-    await message.channel.send(embed=embed)
+    await message.channel.send(embed=embed, tts = True)
 
 
-#Chicken Noodle Soup recipe
-@client.command(name = "Chicken_Noodle_Soup", help = "Displays chicken noodle soup recipe")
+# Chicken Noodle Soup recipe.
+@client.command(name = "Chicken_Noodle_Soup", help = "Displays chicken noodle soup recipe.")
 async def spaghet(message):
     embed = discord.Embed(
         title = 'Insta-Pot Chicken Noodle Soup',
@@ -108,7 +108,7 @@ async def spaghet(message):
     embed.set_image(url='https://i.imgur.com/5QZng5B.jpg')
     embed.set_thumbnail(url='https://i.imgur.com/MtJBiJa.jpg')
     embed.set_footer(text='Love you ♥')
-    await message.channel.send(embed=embed)
+    await message.channel.send(embed=embed, tts = True)
 
 #Chili recipe
 @client.command(name = "Chili", help = "Display chili recipe")
@@ -151,28 +151,26 @@ async def chili(message):
     embed.set_image(url='https://i.imgur.com/5QZng5B.jpg')
     embed.set_thumbnail(url='https://i.imgur.com/LcP0T8P.jpg')
     embed.set_footer(text='Love you ♥')
-    await message.channel.send(embed=embed)
+    await message.channel.send(embed=embed, tts = True)
 
-
-
-# Sends random chancla gif each time.
-@client.command(name = 'chancla', help = "Sends you a gif")
-async def chancla(ctx):
-    chancla_angry = [
-        'https://media.giphy.com/media/TH2TwG8loO06Y/giphy.gif',
-        (
-            'https://media.giphy.com/media/11tGqsN1gN6uc0/giphy.gif'
-        ),
-    ]
-
-    response = random.choice(chancla_angry)
-    await ctx.send(response)
+# Sends a chancla in someone's DM's.
+@client.command(name = 'chancla', help = 'Sends the chancla to other people.')
+async def DM(ctx, user: discord.User):
+   gifs = [
+       'https://media.giphy.com/media/TH2TwG8loO06Y/giphy.gif',
+       (
+           'https://media.giphy.com/media/11tGqsN1gN6uc0/giphy.gif'
+       ),
+   ]
+   gif = random.choice(gifs)
+   message = 'A chancla was sent your way by ' + ctx.author.mention + '\n' + gif
+   await user.send(message, tts = True)
 
 
 # Sends a very, VERY special message.
 @client.command(name = 'hi', help = "Sends a very, VERY special message.")
 async def hello(ctx):
-    await ctx.send('Hey, sugar foot')
+    await ctx.send('Hey, sugar foot', tts = True)
 
 
 # Makes a new channel.
@@ -193,31 +191,31 @@ async def make(ctx, ChannelName = 'testing'):
 # Direct messages the user that calls the command.
 @client.command(name = 'dm', help = 'Sends propaganda.')
 async def dm(ctx):
-   await ctx.author.send('<AeroMilk is the milk for you>')
+   await ctx.author.send('<AeroMilk is the milk for you>', tts = True)
 
 
 # Direct messages the mentioned user.
 @client.command(name = 'dmOther', help = 'Sends propaganda to other people.')
 async def DM(ctx, user: discord.User):
    message = '<AeroMilk is the milk for you> brought to you by an anonymous user',
-   await user.send(message)
+   await user.send(message, tts = True)
 
 
 # Reads a very """"G"""" book in the user's DMs.
 @client.command(name = 'book', help = 'Reads a story.')
 async def story(ctx, user: discord.User):
     message = 'The cats nestle close to their kittens, \n The lambs have laid down with the sheep. \n You are cozy and warm in your bed, my dear. \n Please go the fuck to sleep. \n The windows are dark in the town, child. \n The whales huddle down in the deep. \n I\'ll read you one very last book if you swear \n You\'ll go the fuck to sleep. \n The eagles who soar through the sky are at rest \n And the creatures who crawl, run and creep. \n I know you\'re not thirsty. That\'s bullshit. Stop lying. \n Lie the fuck down, my darling, and sleep. \n'
-    await user.send(message)
+    await user.send(message, tts = True)
     message = 'The wind whispers soft through the grass, hon. \n The field mice, they make not a peep. \n It\'s been thirty-eight minutes already. \n Jesus Christ, what the fuck? Go to sleep. \n All the kids from day care are in dreamland. \n The froggie has made his last leap. \n Hell no, you can\'t go to the bathroom. \n You know where you can go? The fuck to sleep. \n The owls fly forth from the treetops. \n Through the air they soar and they sweep. \n The hot, crimson rage fills my heart, love. \n For real: shut the fuck up and sleep. \n The cubs and the lions are snoring (snore) \n'
-    await user.send(message)
+    await user.send(message, tts = True)
     message = 'Wrapped in a big, snuggly heap. \n How come you can do all this other great shit \n But you can\'t lie the fuck down and sleep? \n The seeds slumber beneath the earth now, \n And the crops that the farmers will reap. \n No more questions, this interview\'s over. \n I\'ve got two words for you, kid: fucking sleep. \n The tiger reclines in the Siberian jungle. \n The sparrow has silenced her cheep. \n Fuck your stuffed bear, I\'m not getting you shit. \n Close your eyes, cut the crap: sleep. \n Flowers doze low in the meadows \n'
-    await user.send(message)
+    await user.send(message, tts = True)
     message = 'And high on the mountains so steep. \n My life is a failure, I\'m a shitty-ass parent. \n Stop fucking with me please, and sleep. \n The giant pangolins of Madagascar are snoozing \n As I lie here and openly weep. \n Sure, fine, whatever, I\'ll bring you some milk. \n Who the fuck cares? You\'re not gonna sleep. \n This room is all I can remember. \n The furniture crappy and cheap. \n You win! You escape, you run down the hall \n As I nod the fuck off and sleep. \n Bleary and dazed I awaken \n To find your eyes shut, so I keep \n My fingers crossed tight, as I tip-toe away \n And pray that you\'re fucking asleep. \n We\'re finally watching our movie. \n Popcorn\'s in the microwave: "beep!" \n Oh shit, goddamn it, you\'ve got to be kidding. \n Go the fuck back to sleep! \n'
-    await user.send(message)
+    await user.send(message, tts = True)
 
 
 # Allows the user to ask the bot a question, and get advice back.
-@client.command(name = 'advice', help = 'Gives you advice')
+@client.command(name = 'advice', help = 'Gives you advice.')
 async def evil(ctx, arg):
     final_advice = [
         'Burn that ' + arg + ' like when I burned my ex\'s house down!',
@@ -226,29 +224,23 @@ async def evil(ctx, arg):
         ),
     ]
     test = random.choice(final_advice)
-    await ctx.send(test)
+    await ctx.send(test, tts = True)
 
 
-
+# Allows the user to speak to Mom Bot
 @client.command(name = 'talk', help = 'Allows you to talk with Mom.')
 async def smart(ctx, arg):
     bot = ChatBot('Mom')
 
     conv = open('chats.txt', 'r').readlines()
-
     trainer = ListTrainer(bot);
-
     trainer.train(conv)
 
 
-    #bot_input = bot.get_response(str(arg))
-    #await ctx.send(str(bot_input))
-
-    #bot_input = arg.content
     bot_input = bot.get_response(arg)
     response = bot.get_response(bot_input)
     final_msg = response
-    #await client.send_message(arg.channel, str(final_msg))
-    await ctx.channel.send(final_msg)
+
+    await ctx.channel.send(final_msg, tts = True)
 
 client.run(TOKEN)
