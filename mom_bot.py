@@ -4,12 +4,16 @@ import random
 
 import discord
 from discord.ext import commands
+from chatterbot import chatterbot
+from chatterbot.trainers import ListTrainer
 from dotenv import load_dotenv
+
+
 
 load_dotenv()
 
 TOKEN = os.getenv('DISCORD_TOKEN')
-client = commands.Bot(command_prefix='')
+client = commands.Bot(command_prefix='', case_insensitive = True)
 
 @client.event
 async def on_ready():
@@ -28,18 +32,16 @@ async def chancla(ctx):
     response = random.choice(chancla_angry)
     await ctx.send(response)
 
-
 # Sends a very, VERY special message.
 @client.command(name = 'hi')
 async def hello(ctx):
     await ctx.send('What the frick did you say to me you lil shoot!')
 
-
 # Makes a new channel.
 @client.command(name = 'channel')
-async def make(ctx, ChannelName = "reee"):
+async def make(ctx, ChannelName = 'testing'):
     guild = ctx.guild
-    ExistingChannel = discord.utils.get(guild.channels, name = ChannelName)
+    ExistingChannel = discord.utils.get(guild.channels, ChannelName)
     if not ExistingChannel:
         print(f'{ChannelName} has been created.')
         await guild.create_text_channel(ChannelName)
@@ -53,33 +55,151 @@ async def dm(ctx):
    await ctx.author.send('<AeroMilk is the milk for you>')
 
 # Direct messages the mentioned user.
+'''
 @client.command(name = 'DM')
 async def DM(ctx, user: discord.User):
    message = '<AeroMilk is the milk for you> brought to you by an anonymous user'
    await user.send(message)
+'''
+# Sets your status to I'm home!
+@client.command(name = 'I\'m home')
+async def imHome(ctx
+   await ctx.send('Testing')
+   await ctx.send('Welcome back, ' + ctx.author.mention)
+
+# Prints everyone's status
+#@client.command(name = 'whoshome')
+#async def pplHome(ctx):
+#   await ctx.send('')
 
 
 # 3 choices and recipe
-@client.command()
-async def embedt(ctx):
+#@client.command(name = 'hungry')
+#async def Hungry(ctx):
+@client.event
+async def on_message(message):
+        if message.content == "Mom i\'m Hungry":
+            await message.channel.send('What do you want for dinner sugar tush? \n'
+                                       '1. Spaghetti \n'
+                                       '2. Chicken Noodle Soup \n'
+                                       '3. Chili \n')
 
-    embed = discord.Embed(
-		title = 'Spahetti',
-		description = 'Spaghetti in just 30 mins with instapot \n \n Ingredient = "1/2 lb Ground Beef, lean (or lean ground turkey)',
-		colour = discord.Colour.blue()
-    )
-    embed.set_author(name='Dinner', icon_url='https://i.imgur.com/CKVgFUk.jpg')
-    embed.set_image(url='https://i.imgur.com/GFvVWpD.jpg')
-    embed.set_thumbnail(url='https://i.imgur.com/zm7BXHj.png')
-    embed.add_field(name='Test Field', value='this is test', inline=False)
-    embed.set_footer(text='This is a footer')
+        elif message.content == "Spaghetti" || message.content == "1":
+            embed = discord.Embed(
+    		title = 'Insta-Pot Spaghetti',
+    		description = 'Spaghetti in just 30 mins with instapot \n \n'
+             '**Ingredients** \n'
+             '• 1/2 lb ground beef, lean (or lean ground turkey) \n'
+             '• 1/2 small onion, diced \n'
+             '• 2 cloves garlic, pressed or finely minced \n'
+             '• 1 cup water \n'
+             '• 4 oz spaghetti noodles, broken in thirds \n '
+             '• 1 1/2 cups spaghetti sauce (jarred or homemade) \n '
+             '• Salt & pepper to taste (will depend on how salty the sauce you use is) \n'
+             '• 1/4 cup parmesan cheese, grated \n'
+             'Optional: \n'
+             '• 1/4 cup mushrooms, sliced \n'
+             '• 1/4 cup bell pepper, chopped \n'
+             '• 5 basil leaves, chopped \n \n \n'
+             '**Instructions** \n'
+             'Turn on the Sauté function (Normal/Med heat). When the display reads “Hot” add the meat. Cook, stirring occasionally, until almost done. If using ground turkey you may need to add a little oil first. \n'
+             'Add the onion, cook, stirring occasionally, until onion starts to turn translucent. \n'
+             'Add garlic, stir. Cancel the Sauté setting. \n'
+             'Add the water. \n'
+             'Sprinkle on the noodles in a criss cross pattern, varying the placement so not all of them are laying side by side. This is to minimize them sticking together. Use a spoon to gently press them down, but do not stir it. \n'
+             'Add spaghetti sauce over noodles, covering them completely. Do Not Stir. \n'
+             'Place the lid on the pressure cooker and lock it into place. Set the steam release knob to Sealing. \n'
+             'Press the Pressure Cook (Manual) button and then the + or - button to choose 9 minutes (or 7 minutes for firmer al dente). \n'
+             'When the cook cycle is finished, let the pot sit and naturally release pressure for 2 minutes (I use a heartier pasta, if you don\'t then do a Quick Release}. Then manually release the remaining pressure by turning the steam release knob to Venting. \n'
+             'When the pin in the lid drops, it is safe to open the lid. Open and stir the spaghetti. Separate any noodles that may have stuck together. Taste and adjust salt, if needed. \n'
+             'Stir in the Parmesan cheese and serve with any garnish you like.'
+             ,
+    		colour = discord.Colour.blue()
+        )
+            embed.set_author(name='Dinner', icon_url='https://i.imgur.com/CKVgFUk.jpg')
+            embed.set_image(url='https://i.imgur.com/5QZng5B.jpg')
+            embed.set_thumbnail(url='https://i.imgur.com/g6X06Gc.jpg')
+            embed.set_footer(text='Love you ♥')
+            await message.channel.send(embed=embed)
 
-    await ctx.send(embed=embed)
+        elif message.content == "Chicken Noodle Soup" || message.content == "2":
+            embed = discord.Embed(
+    		title = 'Insta-Pot Chicken Noodle Soup',
+    		description = 'Chicken Noodle Soup in just 30 mins with that instapot I gave you last christmas. Ohh remember that time, It was marvelous. Oh dear, You should visit more often, I will whip you up some good ol chicken noodle soup til your tum tum get full. Call me more often as well, I miss you so so much lil pumpkin head. \n \n'
+             '**Ingredients** \n'
+             '• 2 tbsp butter unsalted \n'
+             '• 1 large onion chopped \n'
+             '• 2 medium carrots chopped \n'
+             '• 2 stalks celery chopped \n'
+             '• 1 tsp salt or to taste \n '
+             '• 1 tsp pepper or to taste \n '
+             '• 1 tsp thyme dry, 1 tbsp if using fresh \n'
+             '• 1 tbsp parsley fresh, chopped \n'
+             '• 1 tbsp oregano fresh, chopped, 1 tsp if using dry \n'
+             '• 4 cups chicken broth no sodium added \n'
+             '• 4 cups water'
+             '• 5 oz egg noodles uncooked, (about 2 cups)'
+             '• 2 lbs chicken with skin and bones, use at least 1 chicken breast \n \n \n'
+             '**Instructions** \n'
+             '1) Turn on the Sauté function. \n'
+             '2) Add the butter and cook until the butter has melted. Add the onion, carrots and celery and saute for 3 minutes until the onion softens and becomes translucent. \n'
+             '3) Season with salt and pepper, add the thyme, parsley, oregano and stir. Pour in the chicken broth. Add the chicken pieces and add another 4 cups of water. \n'
+             '4) Close the lid. Set the Instant Pot to the Soup setting and set the timer to 7 minutes \n'
+             '5) Once the Instant Pot cycle is complete, wait until the natural release cycle is complete, should take about 10 minutes. Follow the manufacturer\'s guide for quick release, if in a rush. Carefully unlock and remove the lid from the instant pot. \n'
+             '6) Remove the chicken pieces from the soup and shred with two forks. \n'
+             '7) Add the noodles to the soup and set the Instant Pot to the saute setting again. Cook for another 6 minutes uncovered, or until the noodles are cooked. \n'
+             '8) Turn off the Instant Pot, by pressing the cancel button. Add the shredded chicken back to the Instant Pot, taste for seasoning and adjust as necessary. Garnish with additional parsley if preferred. \n'
+             ,
+    		colour = discord.Colour.blue()
+        )
+            embed.set_author(name='Dinner', icon_url='https://i.imgur.com/CKVgFUk.jpg')
+            embed.set_image(url='https://i.imgur.com/5QZng5B.jpg')
+            embed.set_thumbnail(url='https://i.imgur.com/g6X06Gc.jpg')
+            embed.set_footer(text='Love you ♥')
+            await message.channel.send(embed=embed)
+        elif message.content == "Chili" || message.content == "3":
+            embed = discord.Embed(
+    		title = 'Chili in Pot',
+    		description = 'This Chili will just whip you into shape. \n \n'
+             '**Ingredients** \n'
+             '• 2 lbs Ground Beef \n'
+             '• 1/4 cup Green Bell Pepper (Basically half of a Bell Pepper) \n'
+             '• 1/4 cup Red Bell Pepper (Not Necessary) \n'
+             '• 1 Whole Ass Onion \n'
+             '• 2 cloves Garlic \n '
+             '• 1 tsp pepper or to taste \n '
+             '• 1 tsp thyme dry, 1 tbsp if using fresh \n'
+             '• 1 tbsp parsley fresh, chopped \n'
+             '• 1 tbsp oregano fresh, chopped, 1 tsp if using dry \n'
+             '• 4 cups chicken broth no sodium added \n'
+             '• 4 cups water'
+             '• 5 oz egg noodles uncooked, (about 2 cups)'
+             '• 2 lbs chicken with skin and bones, use at least 1 chicken breast \n \n \n'
+             '**Instructions** \n'
+             '1) Turn on the Sauté function. \n'
+             '2) Add the butter and cook until the butter has melted. Add the onion, carrots and celery and saute for 3 minutes until the onion softens and becomes translucent. \n'
+             '3) Season with salt and pepper, add the thyme, parsley, oregano and stir. Pour in the chicken broth. Add the chicken pieces and add another 4 cups of water. \n'
+             '4) Close the lid. Set the Instant Pot to the Soup setting and set the timer to 7 minutes \n'
+             '5) Once the Instant Pot cycle is complete, wait until the natural release cycle is complete, should take about 10 minutes. Follow the manufacturer\'s guide for quick release, if in a rush. Carefully unlock and remove the lid from the instant pot. \n'
+             '6) Remove the chicken pieces from the soup and shred with two forks. \n'
+             '7) Add the noodles to the soup and set the Instant Pot to the saute setting again. Cook for another 6 minutes uncovered, or until the noodles are cooked. \n'
+             '8) Turn off the Instant Pot, by pressing the cancel button. Add the shredded chicken back to the Instant Pot, taste for seasoning and adjust as necessary. Garnish with additional parsley if preferred. \n'
+             ,
+    		colour = discord.Colour.blue()
+        )
+            embed.set_author(name='Dinner', icon_url='https://i.imgur.com/CKVgFUk.jpg')
+            embed.set_image(url='https://i.imgur.com/5QZng5B.jpg')
+            embed.set_thumbnail(url='https://i.imgur.com/g6X06Gc.jpg')
+            embed.set_footer(text='Love you ♥')
+            await message.channel.send(embed=embed)
+        else:
+            await message.channel.send('')
+            on_message
 
 
 # Allows the user to ask the bot a question, and get advice back.
 @client.command(name = 'advice')
-async def smart(ctx, arg):
+async def evil(ctx, arg):
     final_advice = [
         'Burn that ' + arg + ' like when I burned my ex\'s house down!',
         (
@@ -88,5 +208,9 @@ async def smart(ctx, arg):
     ]
     test = random.choice(final_advice)
     await ctx.send(test)
+'''
+@client.command(name = 'advice')
+async def smart(ctx, arg):
+'''
 
 client.run(TOKEN)
