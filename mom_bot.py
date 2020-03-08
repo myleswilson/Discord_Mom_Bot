@@ -1,6 +1,9 @@
 # bot.py
 import os
 import random
+import asyncio
+import pickle
+import os
 
 import discord
 from discord.ext import commands
@@ -15,29 +18,12 @@ load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 client = commands.Bot(command_prefix = '', case_insensitive = True)
 
-'''
-bot = ChatBot('Mom')
-
-conv = open('chats.txt', 'r').readlines()
-
-trainer = ListTrainer(bot);
-
-trainer.train(conv)
-'''
-
 @client.event
 async def on_ready():
     print(f'{client.user.name} has connected to Discord! <AeroMilk is the milk for you>')
 
-'''
-@client.command(name = "help")
-async def story(ctx, user: discord.User):
-    message = ' ``` COMMANDS ```\n ``` help \n chancla \n channel \n dm {user} \n dm0ther \n book {user} \n hungry \n advice {arg} \n talk (((BROKEN!)))```'
-    await user.send(message)
-'''
 
-
-@client.command(name = "hungry")
+@client.command(name = "Mom_I'm_hungry", help = "Mom asks you what you want")
 async def hungry(message):
     await message.channel.send('What do you want for dinner sugar tush? \n'
                                '1. Spaghetti \n'
@@ -46,7 +32,7 @@ async def hungry(message):
     await message.channel.send(embed=embed)
 
 
-@client.command(name = "Spaghetti")
+@client.command(name = "Spaghetti", help = "Displays spaghetti recipe")
 async def spaghet(message):
     embed = discord.Embed(
         title = 'Insta-Pot Spaghetti',
@@ -87,47 +73,45 @@ async def spaghet(message):
 
 
 #Chicken Noodle Soup recipe
-@client.command(name = "Chicken Noodle Soup")
+@client.command(name = "Chicken_Noodle_Soup", help = "Displays chicken noodle soup recipe")
 async def spaghet(message):
     embed = discord.Embed(
-        title = 'Insta-Pot Spaghetti',
-        description = 'Spaghetti in just 30 mins with instapot \n \n'
+        title = 'Insta-Pot Chicken Noodle Soup',
+        description = 'Chicken Noodle Soup in just 30 mins with that instapot I gave you last christmas. Ohh remember that time, It was marvelous. Oh dear, You should visit more often, I will whip you up some good ol chicken noodle soup til your tum tum get full. Call me more often as well, I miss you so so much lil pumpkin head. \n \n'
     '**Ingredients** \n'
-    '• 1/2 lb ground beef, lean (or lean ground turkey) \n'
-    '• 1/2 small onion, diced \n'
-    '• 2 cloves garlic, pressed or finely minced \n'
-    '• 1 cup water \n'
-    '• 4 oz spaghetti noodles, broken in thirds \n '
-    '• 1 1/2 cups spaghetti sauce (jarred or homemade) \n '
-    '• Salt & pepper to taste (will depend on how salty the sauce you use is) \n'
-    '• 1/4 cup parmesan cheese, grated \n'
-    'Optional: \n'
-    '• 1/4 cup mushrooms, sliced \n'
-    '• 1/4 cup bell pepper, chopped \n'
-    '• 5 basil leaves, chopped \n \n \n'
-    '**Instructions** \n'
-    'Turn on the Sauté function (Normal/Med heat). When the display reads “Hot” add the meat. Cook, stirring occasionally, until almost done. If using ground turkey you may need to add a little oil first. \n'
-    'Add the onion, cook, stirring occasionally, until onion starts to turn translucent. \n'
-    'Add garlic, stir. Cancel the Sauté setting. \n'
-    'Add the water. \n'
-    'Sprinkle on the noodles in a criss cross pattern, varying the placement so not all of them are laying side by side. This is to minimize them sticking together. Use a spoon to gently press them down, but do not stir it. \n'
-    'Add spaghetti sauce over noodles, covering them completely. Do Not Stir. \n'
-    'Place the lid on the pressure cooker and lock it into place. Set the steam release knob to Sealing. \n'
-    'Press the Pressure Cook (Manual) button and then the + or - button to choose 9 minutes (or 7 minutes for firmer al dente). \n'
-    'When the cook cycle is finished, let the pot sit and naturally release pressure for 2 minutes (I use a heartier pasta, if you don\'t then do a Quick Release}. Then manually release the remaining pressure by turning the steam release knob to Venting. \n'
-    'When the pin in the lid drops, it is safe to open the lid. Open and stir the spaghetti. Separate any noodles that may have stuck together. Taste and adjust salt, if needed. \n'
-    'Stir in the Parmesan cheese and serve with any garnish you like.'
+     '• 2 tbsp butter unsalted \n'
+     '• 1 large onion chopped \n'
+     '• 2 medium carrots chopped \n'
+     '• 2 stalks of celery chopped \n'
+     '• 1 tsp salt or to taste \n '
+     '• 1 tsp pepper or to taste \n '
+     '• 1 tsp thyme dry, 1 tbsp if using fresh \n'
+     '• 1 tbsp parsley fresh, chopped \n'
+     '• 1 tbsp oregano fresh, chopped, 1 tsp if using dry \n'
+     '• 4 cups chicken broth no sodium added \n'
+     '• 4 cups water'
+     '• 5 oz egg noodles uncooked, (about 2 cups)'
+     '• 2 lbs chicken with skin and bones, use at least 1 chicken breast \n \n \n'
+     '**Instructions** \n'
+     '1) Turn on the Sauté function. \n'
+     '2) Add the butter and cook until the butter has melted. Add the onion, carrots and celery and saute for 3 minutes until the onion softens and becomes translucent. \n'
+     '3) Season with salt and pepper, add the thyme, parsley, oregano and stir. Pour in the chicken broth. Add the chicken pieces and add another 4 cups of water. \n'
+     '4) Close the lid. Set the Instant Pot to the Soup setting and set the timer to 7 minutes \n'
+     '5) Once the Instant Pot cycle is complete, wait until the natural release cycle is complete, should take about 10 minutes. Follow the manufacturer\'s guide for quick release, if in a rush. Carefully unlock and remove the lid from the instant pot. \n'
+     '6) Remove the chicken pieces from the soup and shred with two forks. \n'
+     '7) Add the noodles to the soup and set the Instant Pot to the saute setting again. Cook for another 6 minutes uncovered, or until the noodles are cooked. \n'
+     '8) Turn off the Instant Pot, by pressing the cancel button. Add the shredded chicken back to the Instant Pot, taste for seasoning and adjust as necessary. Garnish with additional parsley if preferred. \n'
     ,
     	colour = discord.Colour.blue()
     )
     embed.set_author(name='Dinner', icon_url='https://i.imgur.com/CKVgFUk.jpg')
     embed.set_image(url='https://i.imgur.com/5QZng5B.jpg')
-    embed.set_thumbnail(url='https://i.imgur.com/g6X06Gc.jpg')
+    embed.set_thumbnail(url='https://i.imgur.com/MtJBiJa.jpg')
     embed.set_footer(text='Love you ♥')
     await message.channel.send(embed=embed)
 
 #Chili recipe
-@client.command(name = "Chili")
+@client.command(name = "Chili", help = "Display chili recipe")
 async def chili(message):
     embed = discord.Embed(
        title = 'Chili in Pot',
@@ -172,7 +156,7 @@ async def chili(message):
 
 
 # Sends random chancla gif each time.
-@client.command(name = 'chancla')
+@client.command(name = 'chancla', help = "Sends you a gif")
 async def chancla(ctx):
     chancla_angry = [
         'https://media.giphy.com/media/TH2TwG8loO06Y/giphy.gif',
@@ -186,12 +170,13 @@ async def chancla(ctx):
 
 
 # Sends a very, VERY special message.
-@client.command(name = 'hi')
+@client.command(name = 'hi', help = "Sends a very, VERY special message.")
 async def hello(ctx):
     await ctx.send('Hey, sugar foot')
 
 
 # Makes a new channel.
+'''
 @client.command(name = 'channel')
 async def make(ctx, ChannelName = 'testing'):
     guild = ctx.guild
@@ -202,23 +187,24 @@ async def make(ctx, ChannelName = 'testing'):
     else:
         await ctx.send('Can you not')
         await ctx.send('https://media.giphy.com/media/jPA6KI2Mdbj5viVW4d/giphy.gif')
+'''
 
 
 # Direct messages the user that calls the command.
-@client.command(name = 'dm')
+@client.command(name = 'dm', help = 'Sends propaganda.')
 async def dm(ctx):
    await ctx.author.send('<AeroMilk is the milk for you>')
 
 
 # Direct messages the mentioned user.
-@client.command(name = 'dmOther')
+@client.command(name = 'dmOther', help = 'Sends propaganda to other people.')
 async def DM(ctx, user: discord.User):
    message = '<AeroMilk is the milk for you> brought to you by an anonymous user',
    await user.send(message)
 
 
 # Reads a very """"G"""" book in the user's DMs.
-@client.command(name = 'book')
+@client.command(name = 'book', help = 'Reads a story.')
 async def story(ctx, user: discord.User):
     message = 'The cats nestle close to their kittens, \n The lambs have laid down with the sheep. \n You are cozy and warm in your bed, my dear. \n Please go the fuck to sleep. \n The windows are dark in the town, child. \n The whales huddle down in the deep. \n I\'ll read you one very last book if you swear \n You\'ll go the fuck to sleep. \n The eagles who soar through the sky are at rest \n And the creatures who crawl, run and creep. \n I know you\'re not thirsty. That\'s bullshit. Stop lying. \n Lie the fuck down, my darling, and sleep. \n'
     await user.send(message)
@@ -231,7 +217,7 @@ async def story(ctx, user: discord.User):
 
 
 # Allows the user to ask the bot a question, and get advice back.
-@client.command(name = 'advice')
+@client.command(name = 'advice', help = 'Gives you advice')
 async def evil(ctx, arg):
     final_advice = [
         'Burn that ' + arg + ' like when I burned my ex\'s house down!',
@@ -243,13 +229,26 @@ async def evil(ctx, arg):
     await ctx.send(test)
 
 
-"""
-@client.command(name = 'talk')
-async def smart(ctx, arg):
-    bot_input = bot.get_response(str(arg))
 
+@client.command(name = 'talk', help = 'Allows you to talk with Mom.')
+async def smart(ctx, arg):
+    bot = ChatBot('Mom')
+
+    conv = open('chats.txt', 'r').readlines()
+
+    trainer = ListTrainer(bot);
+
+    trainer.train(conv)
+
+
+    #bot_input = bot.get_response(str(arg))
     #await ctx.send(str(bot_input))
-    await bot.channel.send(message.channel, bot_input))
-"""
+
+    #bot_input = arg.content
+    bot_input = bot.get_response(arg)
+    response = bot.get_response(bot_input)
+    final_msg = response
+    #await client.send_message(arg.channel, str(final_msg))
+    await ctx.channel.send(final_msg)
 
 client.run(TOKEN)
