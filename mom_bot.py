@@ -4,16 +4,26 @@ import random
 
 import discord
 from discord.ext import commands
-from chatterbot import chatterbot
-from chatterbot.trainers import ListTrainer
 from dotenv import load_dotenv
 
-
+from chatterbot import ChatBot
+from chatterbot.trainers import ListTrainer
 
 load_dotenv()
 
 TOKEN = os.getenv('DISCORD_TOKEN')
-client = commands.Bot(command_prefix='', case_insensitive = True)
+client = commands.Bot(command_prefix = '', case_insensitive = True)
+
+
+bot = ChatBot('Mom')
+
+conv = open('chats.txt', 'r').readlines()
+
+trainer = ListTrainer(bot);
+
+trainer.train(conv)
+
+
 
 @client.event
 async def on_ready():
@@ -55,17 +65,16 @@ async def dm(ctx):
    await ctx.author.send('<AeroMilk is the milk for you>')
 
 # Direct messages the mentioned user.
-'''
-@client.command(name = 'DM')
+@client.command(name = 'dmOther')
 async def DM(ctx, user: discord.User):
    message = '<AeroMilk is the milk for you> brought to you by an anonymous user'
    await user.send(message)
-'''
+
 # Sets your status to I'm home!
-@client.command(name = 'I\'m home')
-async def imHome(ctx
-   await ctx.send('Testing')
-   await ctx.send('Welcome back, ' + ctx.author.mention)
+#@client.command(name = 'I\'m home')
+#async def imHome(ctx):
+#   await ctx.send('Testing')
+#   await ctx.send('Welcome back, ' + ctx.author.mention)
 
 # Prints everyone's status
 #@client.command(name = 'whoshome')
@@ -76,6 +85,7 @@ async def imHome(ctx
 # 3 choices and recipe
 #@client.command(name = 'hungry')
 #async def Hungry(ctx):
+
 @client.event
 async def on_message(message):
         if message.content == "Mom i\'m Hungry":
@@ -84,7 +94,7 @@ async def on_message(message):
                                        '2. Chicken Noodle Soup \n'
                                        '3. Chili \n')
 
-        elif message.content == "Spaghetti" || message.content == "1":
+        elif message.content == "Spaghetti" or message.content == "1":
             embed = discord.Embed(
     		title = 'Insta-Pot Spaghetti',
     		description = 'Spaghetti in just 30 mins with instapot \n \n'
@@ -122,7 +132,7 @@ async def on_message(message):
             embed.set_footer(text='Love you ♥')
             await message.channel.send(embed=embed)
 
-        elif message.content == "Chicken Noodle Soup" || message.content == "2":
+        elif message.content == "Chicken Noodle Soup" or message.content == "2":
             embed = discord.Embed(
     		title = 'Insta-Pot Chicken Noodle Soup',
     		description = 'Chicken Noodle Soup in just 30 mins with that instapot I gave you last christmas. Ohh remember that time, It was marvelous. Oh dear, You should visit more often, I will whip you up some good ol chicken noodle soup til your tum tum get full. Call me more often as well, I miss you so so much lil pumpkin head. \n \n'
@@ -130,7 +140,7 @@ async def on_message(message):
              '• 2 tbsp butter unsalted \n'
              '• 1 large onion chopped \n'
              '• 2 medium carrots chopped \n'
-             '• 2 stalks celery chopped \n'
+             '• 2 stalks of celery chopped \n'
              '• 1 tsp salt or to taste \n '
              '• 1 tsp pepper or to taste \n '
              '• 1 tsp thyme dry, 1 tbsp if using fresh \n'
@@ -157,7 +167,7 @@ async def on_message(message):
             embed.set_thumbnail(url='https://i.imgur.com/g6X06Gc.jpg')
             embed.set_footer(text='Love you ♥')
             await message.channel.send(embed=embed)
-        elif message.content == "Chili" || message.content == "3":
+        elif message.content == "Chili" or message.content == "3":
             embed = discord.Embed(
     		title = 'Chili in Pot',
     		description = 'This Chili will just whip you into shape. \n \n'
@@ -167,23 +177,28 @@ async def on_message(message):
              '• 1/4 cup Red Bell Pepper (Not Necessary) \n'
              '• 1 Whole Ass Onion \n'
              '• 2 cloves Garlic \n '
-             '• 1 tsp pepper or to taste \n '
-             '• 1 tsp thyme dry, 1 tbsp if using fresh \n'
-             '• 1 tbsp parsley fresh, chopped \n'
-             '• 1 tbsp oregano fresh, chopped, 1 tsp if using dry \n'
-             '• 4 cups chicken broth no sodium added \n'
-             '• 4 cups water'
-             '• 5 oz egg noodles uncooked, (about 2 cups)'
-             '• 2 lbs chicken with skin and bones, use at least 1 chicken breast \n \n \n'
+             '• 2 stalks of Celery \n '
+             '• 1 1-14.5oz can Diced Tomatoes \n'
+             '• 1 cup Beef Broth \n'
+             '• 1-6oz Tomato Paste \n'
+             '• 1-15oz can Chili Beans \n'
+             '• 1-15oz can Kidney Beans \n'
+             '• 1 Tbsp Chili Powder \n'
+             '• 1 tsp Cumin \n'
+             '• 2-1/2 tsps Salt \n'
+             '• 2-1/2 tsps Black Pepper \n'
+             '• 1/2 tsp Oregano \n'
+             'Optional: \n'
+             '• 2 pinches of Chili Powder \n'
+             '• Smoked Paprika \n \n \n'
              '**Instructions** \n'
-             '1) Turn on the Sauté function. \n'
-             '2) Add the butter and cook until the butter has melted. Add the onion, carrots and celery and saute for 3 minutes until the onion softens and becomes translucent. \n'
-             '3) Season with salt and pepper, add the thyme, parsley, oregano and stir. Pour in the chicken broth. Add the chicken pieces and add another 4 cups of water. \n'
-             '4) Close the lid. Set the Instant Pot to the Soup setting and set the timer to 7 minutes \n'
-             '5) Once the Instant Pot cycle is complete, wait until the natural release cycle is complete, should take about 10 minutes. Follow the manufacturer\'s guide for quick release, if in a rush. Carefully unlock and remove the lid from the instant pot. \n'
-             '6) Remove the chicken pieces from the soup and shred with two forks. \n'
-             '7) Add the noodles to the soup and set the Instant Pot to the saute setting again. Cook for another 6 minutes uncovered, or until the noodles are cooked. \n'
-             '8) Turn off the Instant Pot, by pressing the cancel button. Add the shredded chicken back to the Instant Pot, taste for seasoning and adjust as necessary. Garnish with additional parsley if preferred. \n'
+             '1) ​In a frying pan season the ground beef with 1-1/2 tsps of salt and 1-1/2 tsp of pepper and brown for 6 minutes. \n'
+             '2) After 6 minutes drain off the fat then set ground beef aside for later. \n'
+             '3) In a separate pan add the olive oil and saute the onion, celery, red pepper, green pepper and jalapeno pepper for 5 minutes. \n'
+             '4) After 5 minutes add the ground beef, diced tomatoes, tomato paste and beef broth. \n'
+             '5) Add the garlic, cumin, oregano, chili powder, 1tsp salt, 1tsp pepper and mix well. \n'
+             '6) Lastly add the chili beans and kidney beans mix and cover. \n'
+             '7) Allow it to cook on low heat for 2 hours stirring ocassionally. After 2 hours remove from heat and serve.  \n'
              ,
     		colour = discord.Colour.blue()
         )
@@ -194,7 +209,6 @@ async def on_message(message):
             await message.channel.send(embed=embed)
         else:
             await message.channel.send('')
-            on_message
 
 
 # Allows the user to ask the bot a question, and get advice back.
@@ -208,9 +222,13 @@ async def evil(ctx, arg):
     ]
     test = random.choice(final_advice)
     await ctx.send(test)
-'''
-@client.command(name = 'advice')
+
+
+
+@client.command(name = 'talk')
 async def smart(ctx, arg):
-'''
+    bot_input = bot.get_response(arg)
+    await ctx.send(bot_input)
+
 
 client.run(TOKEN)
