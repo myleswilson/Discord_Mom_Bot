@@ -163,7 +163,7 @@ async def DM(ctx, user: discord.User):
        ),
    ]
    gif = random.choice(gifs)
-   message = 'A chancla was sent your way by ' + ctx.author.mention + '\n' + gif
+   message = 'A chancla was sent your way by ' + client.user.mention + '\n' + gif
    await user.send(message, tts = True)
 
 
